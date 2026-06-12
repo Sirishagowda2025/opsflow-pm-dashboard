@@ -4,6 +4,39 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --bg-page: #F5F4F0;
+  --bg-surface: #FFFFFF;
+  --bg-hover: #F9F8F5;
+  --bg-subtle: #F2F1ED;
+  --border: #E6E5E1;
+  --border-strong: #D4D3CE;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --text-muted: #AAAAAA;
+  --accent: #1A1A1A;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+input, select, textarea, button {
+  font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
 /*
  * Design system definition.
  *

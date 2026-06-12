@@ -4,13 +4,23 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import {
+  LayoutDashboard,
+  CheckSquare,
+  AlertTriangle,
+  FileText,
+  Settings as SettingsIcon,
+  Sparkles,
+} from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { TasksProvider } from "../lib/tasks-context";
 
 function NotFoundComponent() {
   return (
@@ -77,19 +87,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "OpsFlow" },
+      { name: "description", content: "Operations project management workspace." },
+      { property: "og:title", content: "OpsFlow" },
+      { property: "og:description", content: "Operations project management workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
   }),
@@ -118,8 +132,189 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <TasksProvider>
+        <AppShell />
+      </TasksProvider>
     </QueryClientProvider>
+  );
+}
+
+type NavItem = {
+  to: "/" | "/tasks" | "/risks" | "/reports" | "/settings";
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+};
+
+const NAV: NavItem[] = [
+  { to: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { to: "/tasks", label: "Tasks", icon: CheckSquare },
+  { to: "/risks", label: "Risks", icon: AlertTriangle },
+  { to: "/reports", label: "Reports", icon: FileText },
+  { to: "/settings", label: "Settings", icon: SettingsIcon },
+];
+
+function AppShell() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const current = NAV.find((n) => (n.exact ? pathname === n.to : pathname.startsWith(n.to))) ?? NAV[0];
+
+  return (
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg-page)" }}>
+      <Sidebar pathname={pathname} />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+        <TopBar title={current.label} />
+        <main style={{ padding: 32, flex: 1 }}>
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function Sidebar({ pathname }: { pathname: string }) {
+  return (
+    <aside
+      style={{
+        width: 220,
+        background: "var(--bg-surface)",
+        borderRight: "1px solid var(--border)",
+        display: "flex",
+        flexDirection: "column",
+        position: "sticky",
+        top: 0,
+        height: "100vh",
+      }}
+    >
+      <div style={{ padding: "20px 16px 12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 8, height: 8, background: "#1A1A1A" }} />
+          <span style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A", letterSpacing: "0.02em" }}>
+            OpsFlow
+          </span>
+        </div>
+      </div>
+      <div style={{ borderTop: "1px solid var(--border)", margin: "0 0 8px" }} />
+      <nav style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {NAV.map((item) => {
+          const Icon = item.icon;
+          const active = item.exact ? pathname === item.to : pathname.startsWith(item.to);
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "6px 12px",
+                margin: "2px 8px",
+                borderRadius: 6,
+                fontSize: 13,
+                textDecoration: "none",
+                background: active ? "var(--bg-subtle)" : "transparent",
+                color: active ? "var(--text-primary)" : "var(--text-secondary)",
+                fontWeight: active ? 500 : 400,
+                borderLeft: active ? "2px solid #1A1A1A" : "2px solid transparent",
+              }}
+              onMouseEnter={(e) => {
+                if (!active) {
+                  e.currentTarget.style.background = "var(--bg-hover)";
+                  e.currentTarget.style.color = "var(--text-primary)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!active) {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "var(--text-secondary)";
+                }
+              }}
+            >
+              <Icon size={16} color={active ? "#1A1A1A" : "var(--text-muted)"} />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+      <div
+        style={{
+          borderTop: "1px solid var(--border)",
+          padding: "12px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
+        <div
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: "50%",
+            background: "#1A1A1A",
+            color: "white",
+            fontSize: 11,
+            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          SD
+        </div>
+        <div>
+          <div style={{ fontSize: 13, color: "#1A1A1A", fontWeight: 500 }}>Sirisha D</div>
+          <div style={{ fontSize: 11, color: "var(--text-muted)" }}>PM Apprentice</div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function TopBar({ title }: { title: string }) {
+  const router = useRouter();
+  return (
+    <header
+      style={{
+        height: 52,
+        background: "var(--bg-surface)",
+        borderBottom: "1px solid var(--border)",
+        padding: "0 28px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "sticky",
+        top: 0,
+        zIndex: 10,
+      }}
+    >
+      <div style={{ fontSize: 15, fontWeight: 500, color: "var(--text-primary)" }}>{title}</div>
+      <button
+        onClick={() => router.navigate({ to: "/reports" })}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          border: "1px solid var(--border)",
+          background: "white",
+          color: "var(--text-secondary)",
+          fontSize: 12,
+          padding: "7px 14px",
+          borderRadius: 6,
+          cursor: "pointer",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = "var(--bg-subtle)";
+          e.currentTarget.style.borderColor = "var(--border-strong)";
+          e.currentTarget.style.color = "var(--text-primary)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = "white";
+          e.currentTarget.style.borderColor = "var(--border)";
+          e.currentTarget.style.color = "var(--text-secondary)";
+        }}
+      >
+        <Sparkles size={14} color="var(--text-muted)" />
+        Generate Report
+      </button>
+    </header>
   );
 }
