@@ -162,8 +162,8 @@ function ReportsPage() {
             style={{
               fontSize: 10,
               textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-muted)",
+              letterSpacing: "0.1em",
+              color: "#AAAAAA",
             }}
           >
             Report Output
@@ -222,7 +222,7 @@ function FormattedReport({ text }: { text: string }) {
                 fontSize: 10,
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
-                color: "#AAA",
+                color: "#AAAAAA",
                 marginTop: i === 0 ? 0 : 20,
                 marginBottom: 8,
                 fontFamily: "Inter, sans-serif",
@@ -233,7 +233,7 @@ function FormattedReport({ text }: { text: string }) {
           );
         }
         return (
-          <p key={i} style={{ fontSize: 13, color: "#444", lineHeight: 1.7, margin: "0 0 12px" }}>
+          <p key={i} style={{ fontSize: 13, color: "#444444", lineHeight: 1.7, margin: "0 0 12px" }}>
             {block}
           </p>
         );
