@@ -163,7 +163,7 @@ function AppShell() {
       <Sidebar pathname={pathname} />
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
         <TopBar title={current.label} />
-        <main style={{ padding: 32, flex: 1 }}>
+        <main style={{ padding: "28px 32px", flex: 1 }}>
           <Outlet />
         </main>
       </div>
@@ -185,7 +185,7 @@ function Sidebar({ pathname }: { pathname: string }) {
         height: "100vh",
       }}
     >
-      <div style={{ padding: "20px 16px 12px" }}>
+      <div style={{ padding: "20px 16px 16px", borderBottom: "1px solid #E6E5E1" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 8, height: 8, background: "#1A1A1A" }} />
           <span style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A", letterSpacing: "0.02em" }}>
@@ -193,7 +193,6 @@ function Sidebar({ pathname }: { pathname: string }) {
           </span>
         </div>
       </div>
-      <div style={{ borderTop: "1px solid var(--border)", margin: "0 0 8px" }} />
       <nav style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         {NAV.map((item) => {
           const Icon = item.icon;
@@ -229,7 +228,7 @@ function Sidebar({ pathname }: { pathname: string }) {
                 }
               }}
             >
-              <Icon size={16} color={active ? "#1A1A1A" : "var(--text-muted)"} />
+              <Icon size={16} color={active ? "#1A1A1A" : "#AAAAAA"} />
               <span>{item.label}</span>
             </Link>
           );
@@ -286,7 +285,7 @@ function TopBar({ title }: { title: string }) {
         zIndex: 10,
       }}
     >
-      <div style={{ fontSize: 15, fontWeight: 500, color: "var(--text-primary)" }}>{title}</div>
+      <div style={{ fontSize: 17, fontWeight: 600, color: "var(--text-primary)" }}>{title}</div>
       <button
         onClick={() => router.navigate({ to: "/reports" })}
         style={{
@@ -297,7 +296,7 @@ function TopBar({ title }: { title: string }) {
           background: "white",
           color: "var(--text-secondary)",
           fontSize: 12,
-          padding: "7px 14px",
+          padding: "8px 18px",
           borderRadius: 6,
           cursor: "pointer",
         }}

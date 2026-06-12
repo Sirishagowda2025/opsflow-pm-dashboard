@@ -23,22 +23,23 @@ function StatCard({ label, value, accent }: { label: string; value: number; acce
     <div
       style={{
         ...cardBase,
-        padding: "20px 24px",
+        padding: "22px 24px",
         borderLeft: `3px solid ${accent}`,
         flex: 1,
+        minHeight: 90,
       }}
     >
       <div
         style={{
           fontSize: 10,
           textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          color: "var(--text-muted)",
+          letterSpacing: "0.1em",
+          color: "#AAAAAA",
         }}
       >
         {label}
       </div>
-      <div style={{ fontSize: 36, fontWeight: 600, color: "var(--text-primary)", marginTop: 6 }}>
+      <div style={{ fontSize: 40, fontWeight: 700, color: "var(--text-primary)", marginTop: 6 }}>
         {value}
       </div>
     </div>
@@ -60,7 +61,7 @@ function Dashboard() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       <div style={{ display: "flex", gap: 20 }}>
         <StatCard label="Total Tasks" value={tasks.length} accent="#CBD5E1" />
         <StatCard label="In Progress" value={inProgress} accent="#3B82F6" />
@@ -68,7 +69,7 @@ function Dashboard() {
         <StatCard label="Completed" value={completed} accent="#22C55E" />
       </div>
 
-      <div style={{ display: "flex", gap: 20 }}>
+      <div style={{ display: "flex", gap: 20, alignItems: "stretch" }}>
         <div style={{ ...cardBase, flex: 1.8 }}>
           <div
             style={{
@@ -76,21 +77,19 @@ function Dashboard() {
               borderBottom: "1px solid var(--border)",
               fontSize: 10,
               textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-muted)",
+              letterSpacing: "0.1em",
+              color: "#AAAAAA",
             }}
           >
             Active Tasks
           </div>
-          {tasks
-            .filter((t) => t.status !== "Done")
-            .map((t) => (
+          {tasks.map((t) => (
               <div
                 key={t.id}
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  padding: "13px 20px",
+                  padding: "14px 20px",
                   borderBottom: "1px solid #F5F4F0",
                   gap: 12,
                 }}
@@ -99,8 +98,8 @@ function Dashboard() {
               >
                 <span
                   style={{
-                    width: 6,
-                    height: 6,
+                    width: 7,
+                    height: 7,
                     borderRadius: "50%",
                     background: priorityColor[t.priority],
                     flexShrink: 0,
@@ -110,7 +109,8 @@ function Dashboard() {
                   style={{
                     fontSize: 14,
                     fontWeight: 500,
-                    color: "var(--text-primary)",
+                    color: t.status === "Done" ? "var(--text-muted)" : "var(--text-primary)",
+                    textDecoration: t.status === "Done" ? "line-through" : "none",
                     flex: 1,
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -140,14 +140,14 @@ function Dashboard() {
               borderBottom: "1px solid var(--border)",
               fontSize: 10,
               textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              color: "var(--text-muted)",
+              letterSpacing: "0.1em",
+              color: "#AAAAAA",
             }}
           >
             Project Health
           </div>
           <div style={{ padding: 20 }}>
-            <div style={{ fontSize: 44, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1 }}>
+            <div style={{ fontSize: 52, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1 }}>
               {percent}%
             </div>
             <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4, marginBottom: 16 }}>
@@ -156,7 +156,7 @@ function Dashboard() {
             <div
               style={{
                 background: "#F0EFEB",
-                height: 4,
+                height: 6,
                 borderRadius: 2,
                 overflow: "hidden",
               }}
@@ -175,7 +175,7 @@ function Dashboard() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    padding: "10px 0",
+                    padding: "12px 0",
                     borderBottom: "1px solid #F5F4F0",
                   }}
                 >
