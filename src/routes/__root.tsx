@@ -139,13 +139,20 @@ function RootComponent() {
   );
 }
 
-const NAV = [
+type NavItem = {
+  to: "/" | "/tasks" | "/risks" | "/reports" | "/settings";
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+};
+
+const NAV: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/tasks", label: "Tasks", icon: CheckSquare },
   { to: "/risks", label: "Risks", icon: AlertTriangle },
   { to: "/reports", label: "Reports", icon: FileText },
   { to: "/settings", label: "Settings", icon: SettingsIcon },
-] as const;
+];
 
 function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
