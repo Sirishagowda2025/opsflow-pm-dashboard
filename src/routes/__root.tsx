@@ -93,6 +93,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Operations project management workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "OpsFlow" },
+      { name: "twitter:description", content: "Operations project management workspace." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7dbd9f6a-f262-4a8e-b8bf-b657e52b35ed/id-preview-91a137f5--9718069c-2eda-4661-a7b1-8228130d7078.lovable.app-1781328722159.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7dbd9f6a-f262-4a8e-b8bf-b657e52b35ed/id-preview-91a137f5--9718069c-2eda-4661-a7b1-8228130d7078.lovable.app-1781328722159.png" },
     ],
     links: [
       {
