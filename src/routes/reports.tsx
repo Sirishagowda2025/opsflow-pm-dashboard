@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sparkles, Copy } from "lucide-react";
-import { useTasks } from "@/lib/tasks-context";
+import { useTasks, type Task } from "@/lib/tasks-context";
 
 export const Route = createFileRoute("/reports")({
   head: () => ({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/reports")({
   component: ReportsPage,
 });
 
-function generateReport(tasks) {
+function generateReport(tasks: Task[]) {
   const total = tasks.length;
   const inProgress = tasks.filter((t) => t.status === "In Progress").length;
   const done = tasks.filter((t) => t.status === "Done").length;

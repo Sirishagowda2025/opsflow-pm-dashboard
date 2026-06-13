@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
       { title: "Settings — OpsFlow" },
-      { name: "description", content: "Profile, project, and API settings." },
+      { name: "description", content: "Profile and project settings." },
     ],
   }),
   component: SettingsPage,
@@ -17,19 +17,6 @@ function SettingsPage() {
   const [email, setEmail] = useState("");
   const [project, setProject] = useState("OpsFlow — GOC Operations");
   const [teamSize, setTeamSize] = useState("1");
-  const [apiKey, setApiKey] = useState("");
-  const [savedKey, setSavedKey] = useState<string>("");
-
-  useEffect(() => {
-    const k = localStorage.getItem("claude_api_key") ?? "";
-    setApiKey(k);
-    setSavedKey(k);
-  }, []);
-
-  const handleSave = () => {
-    localStorage.setItem("claude_api_key", apiKey);
-    setSavedKey(apiKey);
-  };
 
   return (
     <div
@@ -49,39 +36,12 @@ function SettingsPage() {
         <Field label="Email" value={email} onChange={setEmail} />
       </Section>
 
-      <Section title="Project">
+      <Section title="Project" last>
         <Field label="Project Name" value={project} onChange={setProject} />
         <Field label="Team size" value={teamSize} onChange={setTeamSize} />
       </Section>
 
-      <Section title="API" last>
-        <Field
-          label="Claude API Key"
-          value={apiKey}
-          onChange={setApiKey}
-          type="password"
-          placeholder="sk-ant-..."
-        />
-        <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: -10 }}>
-          Used to generate AI reports. Your key is stored locally.
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: -6 }}>
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: savedKey ? "#22C55E" : "#EF4444",
-            }}
-          />
-          <span style={{ fontSize: 11, color: savedKey ? "#22C55E" : "#EF4444" }}>
-            {savedKey ? "API key saved" : "No API key"}
-          </span>
-        </div>
-      </Section>
-
       <button
-        onClick={handleSave}
         style={{
           marginTop: 20,
           background: "#1A1A1A",
