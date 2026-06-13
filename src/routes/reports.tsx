@@ -13,57 +13,57 @@ export const Route = createFileRoute("/reports")({
   component: ReportsPage,
 });
 
+function generateReport(tasks) {
+  const total = tasks.length;
+  const inProgress = tasks.filter((t) => t.status === "In Progress").length;
+  const done = tasks.filter((t) => t.status === "Done").length;
+  const todo = tasks.filter((t) => t.status === "To Do").length;
+  const risks = tasks.filter((t) => t.risk === true);
+  const today = new Date();
+  const overdue = tasks.filter(
+    (t) => new Date(t.deadline) < today && t.status !== "Done"
+  );
+  const highPriority = tasks.filter(
+    (t) => t.priority === "High" && t.status !== "Done"
+  );
+
+  const weeklyUpdate = `${total} tasks active across operations. ${inProgress} in progress, ${todo} pending, ${done} completed. ${overdue.length > 0 ? `${overdue.length} task${overdue.length > 1 ? "s are" : " is"} overdue and require immediate attention — ${overdue.map((t) => t.title).join(", ")}.` : "All tasks are within deadline."} ${highPriority.length} high-priority item${highPriority.length !== 1 ? "s" : ""} currently active.`;
+
+  const topRisks =
+    risks.length > 0
+      ? risks
+          .map(
+            (t, i) =>
+              `${i + 1}. ${t.title} — Priority: ${t.priority}. Deadline: ${t.deadline}. ${new Date(t.deadline) < today ? "OVERDUE — immediate escalation required." : "Monitor closely and ensure no further delays."}`
+          )
+          .join("\n")
+      : "1. No tasks are currently flagged as high risk.\n2. Continue monitoring high-priority items approaching deadlines.";
+
+  const recommendations = [
+    highPriority.length > 0
+      ? `1. Prioritise "${highPriority[0].title}" — high priority and currently ${highPriority[0].status.toLowerCase()}. Assign dedicated resource to ensure on-time delivery.`
+      : `1. Maintain current pace — all high-priority tasks are on track.`,
+    overdue.length > 0
+      ? `2. Immediately address overdue task: "${overdue[0].title}". Schedule an urgent sync with the responsible team member today.`
+      : `2. Review upcoming deadlines proactively — schedule check-ins for tasks due within the next 7 days.`,
+    `3. ${done === 0 ? "Focus on moving at least one In Progress task to Done this week to build team momentum." : `Good progress — ${done} task${done > 1 ? "s" : ""} completed. Document learnings and update stakeholders on milestone achievements.`}`,
+  ].join("\n");
+
+  return `WEEKLY UPDATE\n${weeklyUpdate}\n\nTOP RISKS\n${topRisks}\n\nRECOMMENDATIONS\n${recommendations}`;
+}
+
 function ReportsPage() {
   const { tasks, setLastReport } = useTasks();
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const inProgress = tasks.filter((t) => t.status === "In Progress").length;
   const flagged = tasks.filter((t) => t.risk).length;
 
-  const generate = async () => {
-    setError(null);
-    const apiKey = localStorage.getItem("claude_api_key");
-    if (!apiKey) {
-      setError("Add your Claude API key in Settings first");
-      return;
-    }
-
-    const taskSummary = tasks
-      .map(
-        (t) =>
-          `- ${t.title} | Status: ${t.status} | Priority: ${t.priority} | Deadline: ${t.deadline} | Risk: ${t.risk ? "YES" : "No"}`,
-      )
-      .join("\n");
-
+  const generate = () => {
     setLoading(true);
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-          "anthropic-dangerous-client-side-api-key-flag": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 1024,
-          messages: [
-            {
-              role: "user",
-              content: `You are an operations project manager at Google Operations Center. \n\nAnalyse these tasks and generate a professional operations report with exactly 3 sections.\n\nTASKS:\n${taskSummary}\n\nFormat your response EXACTLY like this, with these exact headings:\n\nWEEKLY UPDATE\n\n[2-3 sentences summarising overall project status, what is on track, what needs attention]\n\nTOP RISKS\n\n[List the top 2-3 risks based on risk-flagged tasks and overdue deadlines. Each on a new line starting with a number and period]\n\nRECOMMENDATIONS\n\n[List 2-3 specific, actionable recommendations for the team. Each on a new line starting with a number and period]\n\nBe specific, professional, and concise. Reference actual task names. Do not add any other sections or commentary.`,
-            },
-          ],
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok || !data?.content?.[0]?.text) {
-        throw new Error("API error");
-      }
-      const reportText: string = data.content[0].text;
+    setTimeout(() => {
+      const reportText = generateReport(tasks);
       setReport(reportText);
       const now = new Date();
       setLastReport(
@@ -72,13 +72,10 @@ function ReportsPage() {
           day: "numeric",
           hour: "2-digit",
           minute: "2-digit",
-        }),
+        })
       );
-    } catch {
-      setError("Failed to generate report. Check your API key and try again.");
-    } finally {
       setLoading(false);
-    }
+    }, 1500);
   };
 
   const copy = () => {
@@ -115,7 +112,7 @@ function ReportsPage() {
           }}
         >
           <Sparkles size={12} />
-          Powered by Claude
+          Smart Report
         </span>
         <div style={{ borderTop: "1px solid var(--border)", margin: "20px 0" }} />
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -166,9 +163,6 @@ function ReportsPage() {
           <Sparkles size={14} />
           {loading ? "Generating..." : "Generate Report"}
         </button>
-        {error && (
-          <div style={{ marginTop: 12, fontSize: 12, color: "#EF4444" }}>{error}</div>
-        )}
       </div>
 
       <div
