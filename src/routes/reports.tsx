@@ -13,35 +13,57 @@ export const Route = createFileRoute("/reports")({
   component: ReportsPage,
 });
 
-const STUB = `WEEKLY UPDATE
-
-6 active tasks across operations. 2 high-priority items require immediate attention. Team is on track for Q3 deliverables with one escalation risk identified in APAC onboarding.
-
-TOP RISKS
-
-1. APAC onboarding delay — Impact: High. Recommend immediate resource reallocation and daily standups with team lead.
-
-2. SLA compliance review overdue — Stakeholder visibility at risk. Escalate to operations manager by EOD.
-
-RECOMMENDATIONS
-
-1. Prioritise the EMEA stakeholder report before end of week to maintain leadership confidence.
-
-2. Schedule a focused 30-min sync with APAC team lead to unblock the Q3 onboarding milestone.`;
-
 function ReportsPage() {
   const { tasks, setLastReport } = useTasks();
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const inProgress = tasks.filter((t) => t.status === "In Progress").length;
   const flagged = tasks.filter((t) => t.risk).length;
 
-  const generate = () => {
+  const generate = async () => {
+    setError(null);
+    const apiKey = localStorage.getItem("claude_api_key");
+    if (!apiKey) {
+      setError("Add your Claude API key in Settings first");
+      return;
+    }
+
+    const taskSummary = tasks
+      .map(
+        (t) =>
+          `- ${t.title} | Status: ${t.status} | Priority: ${t.priority} | Deadline: ${t.deadline} | Risk: ${t.risk ? "YES" : "No"}`,
+      )
+      .join("\n");
+
     setLoading(true);
-    setTimeout(() => {
-      setReport(STUB);
-      setLoading(false);
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1024,
+          messages: [
+            {
+              role: "user",
+              content: `You are an operations project manager at Google Operations Center. \n\nAnalyse these tasks and generate a professional operations report with exactly 3 sections.\n\nTASKS:\n${taskSummary}\n\nFormat your response EXACTLY like this, with these exact headings:\n\nWEEKLY UPDATE\n\n[2-3 sentences summarising overall project status, what is on track, what needs attention]\n\nTOP RISKS\n\n[List the top 2-3 risks based on risk-flagged tasks and overdue deadlines. Each on a new line starting with a number and period]\n\nRECOMMENDATIONS\n\n[List 2-3 specific, actionable recommendations for the team. Each on a new line starting with a number and period]\n\nBe specific, professional, and concise. Reference actual task names. Do not add any other sections or commentary.`,
+            },
+          ],
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data?.content?.[0]?.text) {
+        throw new Error("API error");
+      }
+      const reportText: string = data.content[0].text;
+      setReport(reportText);
       const now = new Date();
       setLastReport(
         now.toLocaleString(undefined, {
@@ -51,7 +73,11 @@ function ReportsPage() {
           minute: "2-digit",
         }),
       );
-    }, 1500);
+    } catch {
+      setError("Failed to generate report. Check your API key and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copy = () => {
@@ -139,6 +165,9 @@ function ReportsPage() {
           <Sparkles size={14} />
           {loading ? "Generating..." : "Generate Report"}
         </button>
+        {error && (
+          <div style={{ marginTop: 12, fontSize: 12, color: "#EF4444" }}>{error}</div>
+        )}
       </div>
 
       <div
