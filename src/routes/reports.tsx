@@ -46,6 +46,7 @@ function ReportsPage() {
           "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
           "anthropic-dangerous-direct-browser-access": "true",
+          "anthropic-dangerous-client-side-api-key-flag": "true",
         },
         body: JSON.stringify({
           model: "claude-sonnet-4-6",
