@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -18,6 +18,18 @@ function SettingsPage() {
   const [project, setProject] = useState("OpsFlow — GOC Operations");
   const [teamSize, setTeamSize] = useState("1");
   const [apiKey, setApiKey] = useState("");
+  const [savedKey, setSavedKey] = useState<string>("");
+
+  useEffect(() => {
+    const k = localStorage.getItem("claude_api_key") ?? "";
+    setApiKey(k);
+    setSavedKey(k);
+  }, []);
+
+  const handleSave = () => {
+    localStorage.setItem("claude_api_key", apiKey);
+    setSavedKey(apiKey);
+  };
 
   return (
     <div
@@ -53,9 +65,23 @@ function SettingsPage() {
         <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: -10 }}>
           Used to generate AI reports. Your key is stored locally.
         </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: -6 }}>
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: savedKey ? "#22C55E" : "#EF4444",
+            }}
+          />
+          <span style={{ fontSize: 11, color: savedKey ? "#22C55E" : "#EF4444" }}>
+            {savedKey ? "API key saved" : "No API key"}
+          </span>
+        </div>
       </Section>
 
       <button
+        onClick={handleSave}
         style={{
           marginTop: 20,
           background: "#1A1A1A",
