@@ -161,18 +161,6 @@ No environment variables needed. No API keys. Opens at `localhost:5173`.
 
 ---
 
-## Screenshots
-
-*Add screenshots here by dragging images into the README editor on GitHub*
-
-| Dashboard | Tasks | Reports |
-|---|---|---|
-| *(screenshot)* | *(screenshot)* | *(screenshot)* |
-
----
-
-<div align="center">
-
 ## Built by Sirisha D
 
 Information Science Engineering Graduate · Jun 2026 · Bengaluru, India
