@@ -147,7 +147,6 @@ The first version worked. The fifth version was useful. I rebuilt the UI three t
 The hardest part of the AI report wasn't generating text — it was making it specific. Generic advice is useless. A report that says *"Prioritise the APAC onboarding task — it's overdue and high priority"* is useful. That's the difference between data and insight.
 
 ---
-
 ## Run Locally
 
 ```bash
@@ -161,12 +160,15 @@ No environment variables needed. No API keys. Opens at `localhost:5173`.
 
 ---
 
-## Built by Sirisha D
+<div align="center">
 
-Information Science Engineering Graduate · Jun 2026 · Bengaluru, India
+*Built by **Sirisha D** — Bengaluru, India · Jun 2026*
 
-*"I didn't build OpsFlow to put it on a resume.*
-*I built it to understand what I was applying for."*
+[![LinkedIn](https://img.shields.io/badge/Connect-LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sirisha-d/)
+[![Live Demo](https://img.shields.io/badge/Try%20OpsFlow-Live-22C55E?style=flat)](https://steadyflow-desk.lovable.app)
+[![GitHub](https://img.shields.io/badge/More%20Projects-GitHub-181717?style=flat&logo=github)](https://github.com/Sirishagowda2025)
+
+</div>
 
 [![LinkedIn](https://img.shields.io/badge/Connect-LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sirisha-d/)
 
