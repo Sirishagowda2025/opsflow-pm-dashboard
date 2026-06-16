@@ -6,8 +6,6 @@
 **Built to simulate Google Operations Center workflows —**
 **not because I was asked to, but because I wanted to prove I already think like a PM.**
 
-[**→ Try it live**](https://steadyflow-desk.lovable.app) · [LinkedIn](https://www.linkedin.com/in/sirisha-d/) · [GitHub](https://github.com/Sirishagowda2025)
-
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
 ![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
@@ -162,7 +160,7 @@ No environment variables needed. No API keys. Opens at `localhost:5173`.
 
 <div align="center">
 
-*Built by **Sirisha D** — Bengaluru, India · Jun 2026*
+*Built by **Sirisha D** — Bengaluru, India 
 
 [![LinkedIn](https://img.shields.io/badge/Connect-LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sirisha-d/)
 [![Live Demo](https://img.shields.io/badge/Try%20OpsFlow-Live-22C55E?style=flat)](https://steadyflow-desk.lovable.app)
