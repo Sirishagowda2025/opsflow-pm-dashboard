@@ -160,7 +160,7 @@ No environment variables needed. No API keys. Opens at `localhost:5173`.
 
 <div align="center">
 
-*Built by **Sirisha D** — Bengaluru, India 
+Built by **Sirisha D** — Bengaluru, India 
 
 [![LinkedIn](https://img.shields.io/badge/Connect-LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sirisha-d/)
 [![Live Demo](https://img.shields.io/badge/Try%20OpsFlow-Live-22C55E?style=flat)](https://steadyflow-desk.lovable.app)
