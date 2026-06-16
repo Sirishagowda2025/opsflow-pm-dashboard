@@ -168,8 +168,4 @@ No environment variables needed. No API keys. Opens at `localhost:5173`.
 [![Live Demo](https://img.shields.io/badge/Try%20OpsFlow-Live-22C55E?style=flat)](https://steadyflow-desk.lovable.app)
 [![GitHub](https://img.shields.io/badge/More%20Projects-GitHub-181717?style=flat&logo=github)](https://github.com/Sirishagowda2025)
 
-</div>
 
-[![LinkedIn](https://img.shields.io/badge/Connect-LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sirisha-d/)
-
-</div>
