@@ -80,15 +80,15 @@ Each risk card shows:
 ### AI Report Generation
 This is the feature I'm most proud of.
 
-a) Click **Generate Report** and OpsFlow reads the live task board — not a template, not hardcoded text — and produces a structured stakeholder report with three sections:
+Click **Generate Report** and OpsFlow reads the live task board — not a template, not hardcoded text — and produces a structured stakeholder report with three sections:
 
-b) **WEEKLY UPDATE**
+**WEEKLY UPDATE**
 Plain-English summary of project status. How many tasks active, what's on track, what needs attention. References actual task counts and overdue items.
 
-c) **TOP RISKS**
+**TOP RISKS**
 Pulls every risk-flagged task and every overdue item. Names them specifically. Tells you the impact and what to do about it.
 
-d) **RECOMMENDATIONS**
+**RECOMMENDATIONS**
 Three specific, actionable next steps — generated from the actual state of your tasks. References real task names, not generic advice.
 
 The report changes every time you add, edit, or complete a task. It reflects reality.
